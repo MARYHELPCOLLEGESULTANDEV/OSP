@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galmee Barattoota Mary help college Responsive</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  min-height: 100vh;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  margin-bottom: 30px;
+}
+
+h4, h5 {
+  font-weight: bold;
+}
+
+input, select, button {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  input, select, button {
+    font-size: 0.9rem;
+  }
+  table {
+    font-size: 0.85rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- REGISTER FORM -->
+  <div class="card p-4">
+    <h4 class="text-center mb-3">📋 Galmee Barattootaa Degree Mary help college</h4>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <input type="text" id="name" class="form-control" placeholder="Maqaa Guutuu" required>
+      </div>
+      <div class="col-md-6">
+        <input type="email" id="email" class="form-control" placeholder="Email (Optional)">
+      </div>
+      <div class="col-md-6">
+        <input type="tel" id="phone" class="form-control" placeholder="Lakkoofsa Bilbilaa">
+      </div>
+      <div class="col-md-6">
+        <input type="text" id="address" class="form-control" placeholder="Teesso Jireenya">
+      </div>
+      <div class="col-md-6">
+        <select id="background" class="form-select" required>
+          <option value="">Gosa Barnootaa Duraanii kan yeroo kutaa 10, 11 fi 12  </option>
+          <option>Social</option>
+          <option>Natural</option>
+          <option>IT level 4</option>
+          <option>kan Biraa</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <select id="department" class="form-select" required>
+          <option value="">Department filadhu</option>
+          <option>Computer Science</option>
+          <option>Information Technology</option>
+          <option>Fashion Design</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary w-100" onclick="register()">Galmaa'i</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT TABLE -->
+  <div class="card p-3">
+    <h5 class="text-center mb-3">📊 Tarree Barattootaa</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Maqaa</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Gosa Barnoota Duraanii</th>
+            <th>Department</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="table"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+let students = JSON.parse(localStorage.getItem("students")) || [];
+renderTable();
+
+function register(){
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value || "-";
+  let phone = document.getElementById("phone").value || "-";
+  let address = document.getElementById("address").value || "-";
+  let background = document.getElementById("background").value;
+  let department = document.getElementById("department").value;
+
+  if(!name || !background || !department){
+    alert("Maaloo guutuu galchi");
+    return;
+  }
+
+  students.push({name,email,phone,address,background,department});
+  localStorage.setItem("students", JSON.stringify(students));
+  clearForm();
+  renderTable();
+}
+
+function renderTable(){
+  let table = document.getElementById("table");
+  table.innerHTML = "";
+  students.forEach((s,i)=>{
+    table.innerHTML += `
+      <tr>
+        <td>${i+1}</td>
+        <td>${s.name}</td>
+        <td>${s.email}</td>
+        <td>${s.phone}</td>
+        <td>${s.address}</td>
+        <td>${s.background}</td>
+        <td>${s.department}</td>
+        <td>
+          <button class="btn btn-warning btn-sm me-1" onclick="editStudent(${i})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteStudent(${i})">Delete</button>
+        </td>
+      </tr>`;
+  });
+}
+
+function editStudent(index){
+  let pass = prompt("Password galchi (******):");
+  if(pass === "121212"){
+    let newName = prompt("Maqaa haaraa:",students[index].name);
+    if(newName) students[index].name = newName;
+
+    let newEmail = prompt("Email haaraa:",students[index].email);
+    if(newEmail) students[index].email = newEmail;
+
+    let newPhone = prompt("Phone haaraa:",students[index].phone);
+    if(newPhone) students[index].phone = newPhone;
+
+    let newAddress = prompt("Address haaraa:",students[index].address);
+    if(newAddress) students[index].address = newAddress;
+
+    let newBackground = prompt("Gosa Barnootaa Duraanii haaraa:",students[index].background);
+    if(newBackground) students[index].background = newBackground;
+
+    let newDept = prompt("Department haaraa:",students[index].department);
+    if(newDept) students[index].department = newDept;
+
+    localStorage.setItem("students", JSON.stringify(students));
+    renderTable();
+  } else {
+    alert(`Password hin beekamne ❌
+Gargaarsaaf:
+Telegram: @HNA0993
+Bilbila: 0993204587`);
+  }
+}
+
+function deleteStudent(index){
+  let pass = prompt("Password galchi (121212) delete gochuuf:");
+  if(pass === "121212"){
+    if(confirm("Barataa kana haqaa?")){
+      students.splice(index,1);
+      localStorage.setItem("students", JSON.stringify(students));
+      renderTable();
+    }
+  } else {
+    alert(`Password hin beekamne ❌
+Gargaarsaaf:
+Telegram: @HNA0993
+Bilbila: 0993204587`);
+  }
+}
+
+function clearForm(){
+  document.getElementById("name").value="";
+  document.getElementById("email").value="";
+  document.getElementById("phone").value="";
+  document.getElementById("address").value="";
+  document.getElementById("background").value="";
+  document.getElementById("department").value="";
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
